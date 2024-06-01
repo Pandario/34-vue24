@@ -1,46 +1,44 @@
 import { defineStore } from 'pinia'
 
-export interface Article {
-  date: string;
-  timeSort: number;
-  title: string;
-  url: string;
-  urlToImage: string | null;
+interface Article {
+  source: { id: string | null, name: string }
+  author: string | null
+  title: string
+  description: string
+  url: string
+  urlToImage: string | null
+  publishedAt: string
+  content: string | null
 }
 
-export interface State {
-  allArticles: Article[];
-  displayedArticles: Article[];
-  isLoading: boolean;
-  errors: Error | null;
-  articlesToShow: number;
+interface NewsState {
+  articles: Article[]
+  loading: boolean
+  error: string | null
 }
 
-export const useArticleStore = defineStore('articles', {
-  state: (): State => ({
-    allArticles: [],
-    displayedArticles: [],
-    isLoading: true,
-    errors: null,
-    articlesToShow: 10,
+export const useNewsStore = defineStore('news', {
+  state: (): NewsState => ({
+    articles: [],
+    loading: false,
+    error: null
   }),
   actions: {
-    setArticles(articles: Article[]) {
-      this.allArticles = articles
-      this.displayedArticles = articles.slice(0, this.articlesToShow)
-      this.isLoading = false
-    },
-    loadMoreArticles() {
-      const newArticlesToShow = this.articlesToShow + 10
-      this.displayedArticles = this.allArticles.slice(0, newArticlesToShow)
-      this.articlesToShow = newArticlesToShow
-    },
-    setLoading(loading: boolean) {
-      this.isLoading = loading
-    },
-    setError(error: Error) {
-      this.errors = error
-      this.isLoading = false
-    },
-  },
+    async fetchNews() {
+      this.loading = true
+      this.error = null
+      try {
+        const response = await fetch('https://newsapi.org/v2/top-headlines?country=us&apiKey=fb03640ebf9b46e681589c904b6cba0e')
+        if (!response.ok) {
+          throw new Error('Failed to fetch news')
+        }
+        const data = await response.json()
+        this.articles = data.articles
+      } catch (error) {
+        this.error = (error as Error).message
+      } finally {
+        this.loading = false
+      }
+    }
+  }
 })
