@@ -3,7 +3,7 @@ import { defineComponent, ref } from 'vue'
 export default defineComponent({
   name: 'SearchBar',
   emits: ['search'],
-  setup(props, { emit }) {
+  setup(_, { emit }) {
     const query = ref('')
 
     const handleKeyup = (event: KeyboardEvent) => {
