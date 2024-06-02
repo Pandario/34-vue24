@@ -10,7 +10,10 @@ export default defineComponent({
     const pageViewStore = usePageViewStore()
 
     const loadMoreArticles = () => {
-      if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+      const isMediumOrLarger = window.matchMedia('(min-width: 768px)').matches
+      const threshold = isMediumOrLarger ? 500 : 150
+      const nearBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - threshold
+      if (nearBottom) {
         pageViewStore.loadMoreArticles()
       }
     }
@@ -36,6 +39,7 @@ export default defineComponent({
   render() {
     return (
       <div class="flex flex-wrap justify-center">
+        
         {this.newsStore.loading ? (
           <div class="text-center">Loading...</div>
         ) : this.newsStore.error ? (
