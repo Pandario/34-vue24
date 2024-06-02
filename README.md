@@ -14,4 +14,4 @@ Searchbar logic was made in one branch, data-fetching in other branch. After the
 To make data-format faster - used date-fns lib. First wanted to use axios, but fetched it with vue. 
 
 ## Instalation process:
-Just download .zip, npm install to install dependencies. Enjoy.
+Just download .zip, npm install to install dependencies. Npm run dev. Enjoy.
