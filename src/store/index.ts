@@ -1,8 +1,9 @@
 import { defineStore } from 'pinia'
 import { format } from 'date-fns'
 import { getCachedData, setCachedData } from '@/utils/catch'
+import { usePageViewStore } from './pageview'
 
-interface Article {
+export interface Article {
   source: { id: string | null, name: string }
   author: string | null
   title: string
@@ -14,7 +15,7 @@ interface Article {
   formattedDate: string
 }
 
-interface NewsState {
+export interface NewsState {
   articles: Article[]
   loading: boolean
   error: string | null
@@ -32,9 +33,12 @@ export const useNewsStore = defineStore('news', {
     async fetchNews() {
       this.loading = true
       this.error = null
+      
+// How many news-cards client will see
+      const pageViewStore = usePageViewStore()
+      pageViewStore.resetArticlesDisplayed()
 
 // Trying to check catched data first from utils/catch
-
       const cachedData = getCachedData(CACHE_CHANGES)
       if (cachedData) {
         this.articles = cachedData
@@ -55,7 +59,7 @@ export const useNewsStore = defineStore('news', {
         }))
 
         this.articles = articles,
-//Not forgetting to catche our data!
+//Not forgetting to catche our data
         setCachedData(CACHE_CHANGES, articles)
       } catch (error) {
         this.error = (error as Error).message
