@@ -12,3 +12,6 @@ Logic separated in different files.
 Searchbar logic was made in one branch, data-fetching in other branch. After they were merged several times, one time with conflict, cuz same main file was used in 2 different branches. It was made with purpose to show that I can work with this problem as well. 
 
 To make data-format faster - used date-fns lib. First wanted to use axios, but fetched it with vue. 
+
+## Instalation process:
+Just download .zip, npm install to install dependencies. Enjoy.
