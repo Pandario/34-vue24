@@ -1,9 +1,15 @@
 import { defineComponent, onMounted } from 'vue'
 import { useNewsStore } from '../store/'
+import SearchBar from './SearchBar'
 
 export default defineComponent({
+  name: 'NewsList',
+  components: {
+    SearchBar
+  },
   setup() {
     const newsStore = useNewsStore()
+    
 
     onMounted(() => {
       newsStore.fetchNews()
