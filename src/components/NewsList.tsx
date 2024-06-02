@@ -1,14 +1,17 @@
 import { defineComponent, onMounted, onUnmounted ,computed } from 'vue'
 import { useNewsStore } from '../store/'
 import { usePageViewStore } from '@/store/pageview'
-
+import SearchBar from './SearchBar'
 
 
 export default defineComponent({
+  name: 'NewsList',
+  components: {
+    SearchBar
+  },
   setup() {
     const newsStore = useNewsStore()
     const pageViewStore = usePageViewStore()
-
     const loadMoreArticles = () => {
       const isMediumOrLarger = window.matchMedia('(min-width: 768px)').matches
       const threshold = isMediumOrLarger ? 500 : 150
@@ -17,6 +20,7 @@ export default defineComponent({
         pageViewStore.loadMoreArticles()
       }
     }
+
 
     onMounted(() => {
       newsStore.fetchNews()
